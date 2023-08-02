@@ -1,5 +1,18 @@
 # ELEVATION API
 
+#### Quick start (docker)
+
+```
+    docker-compose up
+```
+
+then navigate to:
+
+http://localhost:8080/docs
+
+
+### Features:
+
 - Handle large amounts of elevation data through geo tiff files
 - Interpolate geometries to generate elevation profiles
 - Automized coordinate system transformation with provided definitions for many SRID codes
