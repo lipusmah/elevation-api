@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  elevation-api:
+    build: ./
+    ports:
+      - 8080:80
+    volumes:
+      - ./data:/data

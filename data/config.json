@@ -1,0 +1,10 @@
+{
+    "datasources": [
+        {
+            "id": "test1",
+            "name": "test1",
+            "path": "./lj_eu_dem_v11.tif"
+        }
+    ],
+    "spatial_ref_sys_path": "./spatial_reference.json"
+}
