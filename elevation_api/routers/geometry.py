@@ -11,16 +11,10 @@ import json
 router = APIRouter()
 
 
-@router.post("/get_z", response_model=list[float], operation_id="getZList")
-async def get_z(geometry: Geometry = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> list[float]:
+@router.post("/get_z", response_model=list[float | None], operation_id="getZList")
+async def get_z(geometry: Geometry = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> list[float | None]:
     _, proj = projection
     return elevations.get_z_list(geometry, proj)
-
-
-@router.post("/get_z/details", response_model=list[ElevationDetails], operation_id="getZListDetails")
-async def get_z_details(multiple_datasources: bool = False, geometry: Geometry = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> list[float]:
-    srid, proj = projection
-    return elevations.get_z_details_list(geometry, proj, srid, multiple_datasources)
 
 
 @router.post("/get_m", response_model=list[float], operation_id="getMListDetails")
@@ -28,8 +22,8 @@ async def get_m(geometry: Geometry = Depends(pre_ls_poly_geometry)) -> list[floa
     return elevations.get_m_list(geometry)
 
 
-@router.post("/get_zm", response_model=list[tuple[float, float]], operation_id="getZMList")
-async def get_zm(geometry: Geometry = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> list[float]:
+@router.post("/get_zm", response_model=list[tuple[float | None, float] ], operation_id="getZMList")
+async def get_zm(geometry: Geometry = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> list[tuple[float | None, float] ]:
     _, proj = projection
     return elevations.get_zm_list(geometry, proj)
 
@@ -42,7 +36,7 @@ async def append_z(geometry: Geometry = Depends(pre_geometry), projection=Depend
 
 
 @router.post("/profile", response_model=ElevationProfile, operation_id="elevationProfile")
-async def reproject(geometry: str = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> geometry:
+async def elevation_profile(geometry: str = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> geometry:
     srid, proj = projection
     es = elevations.get_z_list(geometry, proj)
     m, length_3d, gain, loss, min, max, ms = elevations.get_stats(geometry, es)

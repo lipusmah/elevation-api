@@ -156,21 +156,6 @@ def get_z_list(geometry: Geometry, proj: str) -> list[float]:
     return elevs
 
 
-def get_z_details_list(geometry: Geometry, proj: str) -> list[ElevationDetails]:
-    sr = get_sr(proj)
-    transformers = create_transformers(sr)
-
-    coords_with_datasource = append_datasources(geometry, transformers, sr)
-    grouped, used_datasources = group_by_datasource(coords_with_datasource)
-    elevs = get_elevations_for_datasources(grouped, used_datasources)
-    out = []
-    for i, (x, y, xt, yt, ds) in coords_with_datasource:
-        elev = elevs[i]
-        out.append(create_elevation_details(x, y, xt, yt, ds, elev))
-
-    return out
-
-
 def get_m_list(geometry: Geometry):
     ms = []
     m = 0
@@ -237,14 +222,19 @@ def get_elevations_for_datasources(grouped: dict[str, dict[int, list[tuple[float
         ranges = grouped[dsid]
         for rang in ranges:
             coords = ranges[rang]
-            pix_coords = [get_pixel_coordinates(ds, x, y) for x, y in coords]
-            eles = read_pixels_for_coords(ds, pix_coords)
+            if dsid is None:
+                eles = [None for _ in coords]
+            else:
+                pix_coords = [get_pixel_coordinates(ds, x, y) for x, y in coords]
+                eles = read_pixels_for_coords(ds, pix_coords)
             data.append((rang, eles))
 
     data.sort(key=lambda i: i[0])
     # removing tuple and flattening coordinates for output
     return [i for es in [i[1] for i in data] for i in es]
 
+class NoneDatasourceType:
+    id = None
 
 def group_by_datasource(data: list[tuple[float, float, GeoTiffDatasource]]):
     grouped: dict[str, dict[int, list[tuple[float, float]]]] = {}
@@ -253,6 +243,8 @@ def group_by_datasource(data: list[tuple[float, float, GeoTiffDatasource]]):
     c = 0
 
     for xt, yt, ds in data:
+        if ds is None:
+            ds = NoneDatasourceType()
         if ds.id not in grouped:
             grouped[ds.id] = {}
             datasources[ds.id] = ds
@@ -273,6 +265,8 @@ def append_z(geojson: Geometry, proj) -> Geometry:
     for i in range(0, geometry.GetPointCount()):
         # GetPoint returns a tuple not a Geometry
         z = zs[i]
+        if z is None:
+            z = 0
         x, y, _ = geometry.GetPoint(i)
         geometry.SetPoint(i, x, y, z)
     return json.loads(geometry.ExportToJson())

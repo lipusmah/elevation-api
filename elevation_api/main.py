@@ -7,6 +7,8 @@ import os
 
 app = FastAPI()
 
+config_path = os.getenv("ELEVATIONAPI_CONFIG_PATH")
+
 # debug: endpoint profiler
 # app.add_middleware(CProfileMiddleware, enable=True, server_app=app,
 #                    print_each_request=True, filename="output.txt", strip_dirs=False, sort_by='cumulative')
@@ -17,7 +19,7 @@ app = FastAPI()
 
 # def list_files(startpath):
 #     for root, dirs, files in os.walk(startpath):
-#         level = root.replace(startpath, '').count(os.sep)
+#         level = root.replace(startpath, '').c ount(os.sep)
 #         indent = ' ' * 4 * (level)
 #         print('{}{}/'.format(indent, os.path.basename(root)))
 #         subindent = ' ' * 4 * (level + 1)
@@ -25,8 +27,10 @@ app = FastAPI()
 #             print('{}{}'.format(subindent, f))
 # list_files("../.")
 
-config = configuration.ElevationApiConfig(
-    "/data/config.json")
+if config_path is None:
+    config_path = "/data/config.json"
+
+config = configuration.ElevationApiConfig(config_path)
 
 app.include_router(geometry.router, prefix="/geometry",
                    tags=["Geometry"])

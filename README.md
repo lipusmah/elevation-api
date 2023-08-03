@@ -12,8 +12,8 @@ http://localhost:8080/docs
 
 
 ### Features:
-
 - Handle large amounts of elevation data through geo tiff files
+- Endpoints for GeoJson geometry to generate large elevation profiles
 - Interpolate geometries to generate elevation profiles
 - Automized coordinate system transformation with provided definitions for many SRID codes
 

@@ -21,7 +21,7 @@ class ElevationProfile(BaseModel):
 class ElevationDetails(BaseModel):
     elevation: float
     datasource: GeoTiffDatasource
-    reprojected: tuple[float, float]
+    reprojected: tuple[float | None, float | None]
     original: tuple[float, float]
     in_proj: str
     in_srid: Union[int, None]
