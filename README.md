@@ -8,7 +8,7 @@
 
 then navigate to:
 
-http://localhost:8080/docs
+http://localhost:8080/docs or http://localhost:8080/docs
 
 
 ### Features:
