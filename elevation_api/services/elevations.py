@@ -266,7 +266,18 @@ def append_z(geojson: Geometry, proj) -> Geometry:
         # GetPoint returns a tuple not a Geometry
         z = zs[i]
         if z is None:
-            z = 0
+            z = -9999
         x, y, _ = geometry.GetPoint(i)
         geometry.SetPoint(i, x, y, z)
+    return json.loads(geometry.ExportToJson())
+
+def append_m(geojson: Geometry) -> Geometry:
+    geometry = ogr.CreateGeometryFromJson(geojson)
+    ms = get_m_list(geojson)
+
+    for i in range(0, geometry.GetPointCount()):
+        # GetPoint returns a tuple not a Geometry
+        m = ms[i]
+        x, y, _ = geometry.GetPoint(i)
+        geometry.SetPoint(i, x, y, m)
     return json.loads(geometry.ExportToJson())

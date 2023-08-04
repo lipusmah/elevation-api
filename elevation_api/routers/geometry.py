@@ -34,6 +34,11 @@ async def append_z(geometry: Geometry = Depends(pre_geometry), projection=Depend
     g = elevations.append_z(geometry, proj)
     return g
 
+@router.post("/append_m", operation_id="appendZ")
+async def append_m(geometry: Geometry = Depends(pre_geometry), projection=Depends(pre_projection)) -> list[float]:
+    _, proj = projection
+    g = elevations.append_m(geometry)
+    return g
 
 @router.post("/profile", response_model=ElevationProfile, operation_id="elevationProfile")
 async def elevation_profile(geometry: str = Depends(pre_ls_poly_geometry), projection=Depends(pre_projection)) -> geometry:

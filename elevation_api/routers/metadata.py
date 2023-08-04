@@ -1,7 +1,7 @@
 from elevation_api.configuration import GeoTiffDatasource, Projection
 from elevation_api.dependencies.projection import pre_projection
 from elevation_api.services.projections import reproject_extent
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from elevation_api import main
 
 router = APIRouter()
@@ -17,8 +17,9 @@ async def datasources(projection=Depends(pre_projection)):
     return main.config.datasources
 
 
-@router.get("/srs", response_model=list[Projection])
-async def spatial_refs() -> dict[int, Projection]:
-    response = [main.config.spatial_ref_sys[i]
-                for i in main.config.spatial_ref_sys]
-    return response
+@router.get("/srs/{srid}", response_model=Projection)
+async def spatial_refs(srid: int) -> dict[int, Projection]:
+    if srid in main.config.spatial_ref_sys.projections:
+        response = main.config.spatial_ref_sys.projections[srid]
+        return response
+    raise HTTPException(status_code=404, detail="Spatial reference not found")
