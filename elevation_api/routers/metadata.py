@@ -18,7 +18,7 @@ async def datasources(projection=Depends(pre_projection)):
 
 
 @router.get("/srs/{srid}", response_model=Projection)
-async def spatial_refs(srid: int) -> dict[int, Projection]:
+async def spatial_refs(srid: int) -> Projection:
     if srid in main.config.spatial_ref_sys.projections:
         response = main.config.spatial_ref_sys.projections[srid]
         return response
