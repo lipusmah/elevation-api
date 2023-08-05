@@ -8,7 +8,7 @@ from elevation_api.models.elevation_responses import ElevationDetails
 router = APIRouter()
 
 
-@router.get("/{x}/{y}", response_model=float | None, operation_id="getElevation")
+@router.get("/{x}/{y}", response_model=float | None, operation_id="Get Z for X, Y", description="Get elevation for x, y (long, lat)")
 async def elevation(x: float, y: float, projection=Depends(pre_projection)) -> float:
     _, proj = projection
     sr = get_sr(proj)

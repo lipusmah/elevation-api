@@ -1,5 +1,12 @@
 # ELEVATION API
 
+## API DEFINITION
+The swagger/open-api definitions can be found at:
+http://elevation.lipusblaz.com/docs or http://elevation.lipusblaz.com/redoc
+
+Try it directly:
+http://elevation.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
+
 #### Quick start (docker)
 
 ```
