@@ -3,6 +3,7 @@ from elevation_api.dependencies.projection import pre_projection
 from elevation_api.services.projections import reproject_extent
 from fastapi import APIRouter, Depends, HTTPException
 from elevation_api import main
+from copy import deepcopy 
 
 router = APIRouter()
 
@@ -10,11 +11,11 @@ router = APIRouter()
 @router.get("/datasources", response_model=list[GeoTiffDatasource])
 async def datasources(projection=Depends(pre_projection)):
     srid, proj = projection
-    dss = main.config.datasources.copy()
+    dss = deepcopy(main.config.datasources)
     for ds in dss:
         ds.extent = reproject_extent(ds.extent, ds.proj, proj)
         ds.path = None
-    return main.config.datasources
+    return dss
 
 
 @router.get("/srs/{srid}", response_model=Projection)
