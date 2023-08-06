@@ -1,5 +1,12 @@
 # ELEVATION API
 
+## API demo page (limited)
+The swagger/open-api definitions can be found at:
+http://elevation.lipusblaz.com/docs or http://elevation.lipusblaz.com/redoc
+
+Try it directly:
+http://elevation.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
+
 #### Quick start (docker)
 
 ```
@@ -8,16 +15,22 @@
 
 then navigate to:
 
-http://localhost:8080/docs
+http://localhost:8080/docs or http://localhost:8080/docs
 
 
 ### Features:
-- Handle large amounts of elevation data through geo tiff files
-- Endpoints for GeoJson geometry to generate large elevation profiles
+- Handle large number of points with elevation data
+- Endpoints for GeoJSON geometry to retrieve elevations for each vertex
 - Interpolate geometries to generate elevation profiles
 - Automized coordinate system transformation with provided definitions for many SRID codes
 
 ## Setup
+
+There is 1 environmental variable:
+
+ELEVATIONAPI_CONFIG_PATH="/data/config.json"
+
+If working on other systems than ubuntu, update his variable accordingly
 
 ### Local setup
 Prerequsites:
@@ -40,6 +53,12 @@ For DEBUGGING run ```debug.py``` file with python interpreter set to **poetry en
 Running for production (pyproject.toml script):
 ```shell
 poetry run start
+```
+
+#### Testing
+To run the tests inside /tests directory run:
+```shell
+poetry run pytest
 ```
 
 ### Docker
