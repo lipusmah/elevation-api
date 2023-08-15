@@ -1,11 +1,14 @@
 # ELEVATION API
 
-## API demo page (limited)
+## Demo CLIENT
+https://elevation-app.lipusblaz.com
+
+## Demo API (limited)
 The swagger/open-api definitions can be found at:
-http://elevation.lipusblaz.com/docs or http://elevation.lipusblaz.com/redoc
+https://elevation.lipusblaz.com/docs or https://elevation.lipusblaz.com/redoc
 
 Try it directly:
-http://elevation.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
+https://elevation.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
 
 #### Quick start (docker)
 
