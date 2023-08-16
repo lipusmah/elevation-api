@@ -3,6 +3,7 @@
 <img style="float: right;padding: 1rem" src="docs/client.jpg">
 
 ### Features:
+- On premise, easily deployable with Docker
 - TIF files as custom elevation sources files (e.g. [Copernicus EU DEM](https://land.copernicus.eu/imagery-in-situ/eu-dem/eu-dem-v1.1/view))
 - Endpoints for GeoJSON geometry to retrieve elevations for each vertex
 - Geometry interpolation with elevation profile
