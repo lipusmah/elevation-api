@@ -1,14 +1,30 @@
 # ELEVATION API
 
-## Demo CLIENT
-https://elevation-app.lipusblaz.com
+<img style="float: right;padding: 1rem" src="docs/client.jpg">
 
-## Demo API (limited)
+### Features:
+- TIF files as custom elevation sources files (e.g. [Copernicus EU DEM](https://land.copernicus.eu/imagery-in-situ/eu-dem/eu-dem-v1.1/view))
+- Endpoints for GeoJSON geometry to retrieve elevations for each vertex
+- Geometry interpolation with elevation profile
+- Automatic coordinate system transformations using provided definitions ( ```data/spatial_reference.json```) for many SRID codes and geotiff metadata parsing
+
+### Demo CLIENT
+https://elevation-app.lipusblaz.com 
+
+github: https://github.com/lipusmah/elevation-api-client
+
+### Demo API (limited)
 The swagger/open-api definitions can be found at:
 https://elevation.lipusblaz.com/docs or https://elevation.lipusblaz.com/redoc
 
 Try it directly:
 https://elevation.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
+
+#### to-do:
+- Tests
+- CI testing pipeline
+- Sub-pixel elevation interpolation (different functions - linear, cubic etc)
+
 
 #### Quick start (docker)
 
@@ -20,12 +36,6 @@ then navigate to:
 
 http://localhost:8080/docs or http://localhost:8080/docs
 
-
-### Features:
-- Handle large number of points with elevation data
-- Endpoints for GeoJSON geometry to retrieve elevations for each vertex
-- Interpolate geometries to generate elevation profiles
-- Automized coordinate system transformation with provided definitions for many SRID codes
 
 ## Setup
 
