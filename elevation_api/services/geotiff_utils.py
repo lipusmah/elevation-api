@@ -3,7 +3,6 @@ from osgeo.gdalconst import GA_ReadOnly
 
 
 def get_extent(tif_path):
-   
     # Open the dataset
     data = gdal.Open(tif_path, gdal.GA_ReadOnly)
     
@@ -24,21 +23,20 @@ def get_extent(tif_path):
         return xp, yp
 
     corners = [
-        (0, 0),
-        (cols, 0),
-        (cols, rows),
-        (0, rows)
+        transform(0, 0, geoTransform),        # Top-left
+        transform(cols, 0, geoTransform),     # Top-right
+        transform(cols, rows, geoTransform),  # Bottom-right
+        transform(0, rows, geoTransform)      # Bottom-left
     ]
+    
+    # Initialize min and max values
+    minx = min(corners, key=lambda c: c[0])[0]
+    maxx = max(corners, key=lambda c: c[0])[0]
+    miny = min(corners, key=lambda c: c[1])[0]
+    maxy = max(corners, key=lambda c: c[1])[0]
 
-    transformed_corners = [transform(x, y, geoTransform) for x, y in corners]
-    transformed_corners = np.array(transformed_corners)
-    
-    minx, miny = transformed_corners.min(axis=0)
-    maxx, maxy = transformed_corners.max(axis=0)
-    
     data = None
     return [minx, miny, maxx, maxy]
-
 
 def get_srid(tif_path):
     data = gdal.Open(tif_path)
