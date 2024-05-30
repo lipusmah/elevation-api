@@ -22,18 +22,17 @@ def get_extent(tif_path):
         yp = gt[3] + x * gt[4] + y * gt[5]
         return xp, yp
 
-    corners = [
-        transform(0, 0, geoTransform),        # Top-left
-        transform(cols, 0, geoTransform),     # Top-right
-        transform(cols, rows, geoTransform),  # Bottom-right
-        transform(0, rows, geoTransform)      # Bottom-left
-    ]
-    
-    # Initialize min and max values
-    minx = min(corners, key=lambda c: c[0])[0]
-    maxx = max(corners, key=lambda c: c[0])[0]
-    miny = min(corners, key=lambda c: c[1])[0]
-    maxy = max(corners, key=lambda c: c[1])[0]
+    # Calculate all four corner coordinates
+    top_left = transform(0, 0, geoTransform)
+    top_right = transform(cols, 0, geoTransform)
+    bottom_right = transform(cols, rows, geoTransform)
+    bottom_left = transform(0, rows, geoTransform)
+
+    # Determine the extent
+    minx = min(top_left[0], top_right[0], bottom_right[0], bottom_left[0])
+    maxx = max(top_left[0], top_right[0], bottom_right[0], bottom_left[0])
+    miny = min(top_left[1], top_right[1], bottom_right[1], bottom_left[1])
+    maxy = max(top_left[1], top_right[1], bottom_right[1], bottom_left[1])
 
     data = None
     return [minx, miny, maxx, maxy]
