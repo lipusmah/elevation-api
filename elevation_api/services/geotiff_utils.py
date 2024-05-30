@@ -3,12 +3,39 @@ from osgeo.gdalconst import GA_ReadOnly
 
 
 def get_extent(tif_path):
-    data = gdal.Open(tif_path, GA_ReadOnly)
+   
+    # Open the dataset
+    data = gdal.Open(tif_path, gdal.GA_ReadOnly)
+    
+    if data is None:
+        raise FileNotFoundError(f"Unable to open {tif_path}")
+    
     geoTransform = data.GetGeoTransform()
-    minx = geoTransform[0]
-    maxy = geoTransform[3]
-    maxx = minx + geoTransform[1] * data.RasterXSize
-    miny = maxy + geoTransform[5] * data.RasterYSize
+    
+    # Get the raster size
+    cols = data.RasterXSize
+    rows = data.RasterYSize
+    
+    # Calculate the extent coordinates
+    def transform(x, y, gt):
+        """Transform pixel coordinates to geospatial coordinates."""
+        xp = gt[0] + x * gt[1] + y * gt[2]
+        yp = gt[3] + x * gt[4] + y * gt[5]
+        return xp, yp
+
+    corners = [
+        (0, 0),
+        (cols, 0),
+        (cols, rows),
+        (0, rows)
+    ]
+
+    transformed_corners = [transform(x, y, geoTransform) for x, y in corners]
+    transformed_corners = np.array(transformed_corners)
+    
+    minx, miny = transformed_corners.min(axis=0)
+    maxx, maxy = transformed_corners.max(axis=0)
+    
     data = None
     return [minx, miny, maxx, maxy]
 
