@@ -3,39 +3,15 @@ from osgeo.gdalconst import GA_ReadOnly
 
 
 def get_extent(tif_path):
-    # Open the dataset
-    data = gdal.Open(tif_path, gdal.GA_ReadOnly)
-    
-    if data is None:
-        raise FileNotFoundError(f"Unable to open {tif_path}")
-    
+    data = gdal.Open(tif_path, GA_ReadOnly)
     geoTransform = data.GetGeoTransform()
-    
-    # Get the raster size
-    cols = data.RasterXSize
-    rows = data.RasterYSize
-    
-    # Calculate the extent coordinates
-    def transform(x, y, gt):
-        """Transform pixel coordinates to geospatial coordinates."""
-        xp = gt[0] + x * gt[1] + y * gt[2]
-        yp = gt[3] + x * gt[4] + y * gt[5]
-        return xp, yp
-
-    # Calculate all four corner coordinates
-    top_left = transform(0, 0, geoTransform)
-    top_right = transform(cols, 0, geoTransform)
-    bottom_right = transform(cols, rows, geoTransform)
-    bottom_left = transform(0, rows, geoTransform)
-
-    # Determine the extent
-    minx = min(top_left[0], top_right[0], bottom_right[0], bottom_left[0])
-    maxx = max(top_left[0], top_right[0], bottom_right[0], bottom_left[0])
-    miny = min(top_left[1], top_right[1], bottom_right[1], bottom_left[1])
-    maxy = max(top_left[1], top_right[1], bottom_right[1], bottom_left[1])
-
+    minx = geoTransform[0]
+    maxy = geoTransform[3]
+    maxx = minx + geoTransform[1] * data.RasterXSize
+    miny = maxy + geoTransform[5] * data.RasterYSize
     data = None
     return [minx, miny, maxx, maxy]
+
 
 def get_srid(tif_path):
     data = gdal.Open(tif_path)
