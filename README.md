@@ -10,16 +10,16 @@
 - Automatic coordinate system transformations using provided definitions ( ```data/spatial_reference.json```) for many SRID codes and geotiff metadata parsing
 
 ### Demo CLIENT
-https://elevapp.lipusblaz.com
+http://elevapp.lipusblaz.com
 
 github: https://github.com/lipusmah/elevation-api-client
 
 ### Demo API (limited)
 The swagger/open-api definitions can be found at:
-https://elevapi.lipusblaz.com/docs or https://elevation.lipusblaz.com/redoc
+http://elevapi.lipusblaz.com/docs or https://elevation.lipusblaz.com/redoc
 
 Try it directly:
-https://elevapi.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
+http://elevapi.lipusblaz.com/elevation/14.5128/46.1384?srid=4326
 
 #### to-do:
 - Tests
